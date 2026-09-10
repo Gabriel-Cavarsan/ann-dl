@@ -84,7 +84,7 @@ for ax, s in zip(axes.ravel(), ESCALAS):
     desenhar_classes(ax, X_s, y_s, f"s = {s}")
     ax.set_xlim(X_maior[:, 0].min() - 1, X_maior[:, 0].max() + 1)
     ax.set_ylim(X_maior[:, 1].min() - 1, X_maior[:, 1].max() + 1)
-axes[0, 0].legend()
+    ax.legend(fontsize=8)
 fig.suptitle("Figura 2 - As mesmas 4 classes sob quatro fatores de espalhamento")
 fig.tight_layout()
 fig.savefig(FIGURAS / "fig2.png", dpi=150)

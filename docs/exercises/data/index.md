@@ -83,7 +83,8 @@ Sobreposição em $s = 1$. Os 6,75% de pontos mal atribuídos se concentram quas
 
 Uma única fronteira linear não separa as quatro classes: uma reta divide o plano em duas regiões e precisamos de quatro. O mínimo é três retas. Um conjunto de fronteiras lineares, por outro lado, resolve quase tudo, e é o que uma rede com camada escondida constrói ao combinar semiplanos em regiões poligonais.
 
-Esboço das fronteiras:
+Abaixo, a Figura 1 novamente — os mesmos 400 pontos e os mesmos centros — agora com as
+fronteiras de decisão desenhadas por cima:
 
 ![Figura 1b](figures/fig1b.png)
 
@@ -267,26 +268,6 @@ Quais decisões mais afetariam o treinamento. O $\log(1+x)$. É a única transfo
 
 ---
 
-## Resumo dos resultados
-
-| # | Item | Seu valor |
-|---|---|---|
-| 1 | Taxa de mistura em $s = 0{,}5$ | 0,0000 (0 de 400) |
-| 2 | Taxa de mistura em $s = 1{,}0$ | 0,0675 (27 de 400) |
-| 3 | Taxa de mistura em $s = 2{,}0$ | 0,2250 (90 de 400) |
-| 4 | Taxa de mistura em $s = 4{,}0$ | 0,4175 (167 de 400) |
-| 5 | Menor $r_{ij}$ em $s = 1{,}0$ e qual é o par | 1,326 — par (0, 1) |
-| 6 | Distância entre os centros — Dataset I | 3,2282 |
-| 7 | Distância entre os centros — Dataset II | 0,2662 |
-| 8 | Variância explicada PC1 + PC2 — Dataset I | 66,0% (50,0% + 15,9%) |
-| 9 | Variância explicada PC1 + PC2 — Dataset II | 42,9% (21,6% + 21,3%) |
-| 10 | Proporção da classe positiva em `Transported` | 0,5036 (50,36%) |
-| 11 | Média e mediana de `FoodCourt` no treino, antes de transformar | média 452,61 / mediana 0,00 |
-| 12 | `shape` final da matriz de features de treino | (6954, 17) |
-| 13 | Mínimo e máximo do treino e do teste após o escalonamento | treino [−1,0000 ; 1,0000] / teste [−1,0000 ; 1,1383] |
-
----
-
 ## Código
 
 ### `code/ex1_nuvens.py`
@@ -306,3 +287,23 @@ Quais decisões mais afetariam o treinamento. O $\log(1+x)$. É a única transfo
 ```python
 --8<-- "docs/exercises/data/code/ex3_spaceship.py"
 ```
+
+---
+
+## Resumo dos resultados
+
+| # | Item | Seu valor |
+|---|---|---|
+| 1 | Taxa de mistura em $s = 0{,}5$ | 0,0000 (0 de 400) |
+| 2 | Taxa de mistura em $s = 1{,}0$ | 0,0675 (27 de 400) |
+| 3 | Taxa de mistura em $s = 2{,}0$ | 0,2250 (90 de 400) |
+| 4 | Taxa de mistura em $s = 4{,}0$ | 0,4175 (167 de 400) |
+| 5 | Menor $r_{ij}$ em $s = 1{,}0$ e qual é o par | 1,326 — par (0, 1) |
+| 6 | Distância entre os centros — Dataset I | 3,2282 |
+| 7 | Distância entre os centros — Dataset II | 0,2662 |
+| 8 | Variância explicada PC1 + PC2 — Dataset I | 66,0% (50,0% + 15,9%) |
+| 9 | Variância explicada PC1 + PC2 — Dataset II | 42,9% (21,6% + 21,3%) |
+| 10 | Proporção da classe positiva em `Transported` | 0,5036 (50,36%) |
+| 11 | Média e mediana de `FoodCourt` no treino, antes de transformar | média 452,61 / mediana 0,00 |
+| 12 | `shape` final da matriz de features de treino | (6954, 17) |
+| 13 | Mínimo e máximo do treino e do teste após o escalonamento | treino [−1,0000 ; 1,0000] / teste [−1,0000 ; 1,1383] |
