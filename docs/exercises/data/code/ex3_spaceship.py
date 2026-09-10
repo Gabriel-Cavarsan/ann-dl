@@ -49,59 +49,66 @@ foodcourt_bruto = X_treino["FoodCourt"].copy()  # guardado para o "antes" da Fig
 imputador_num = SimpleImputer(strategy="median").fit(X_treino[NUMERICAS])
 imputador_cat = SimpleImputer(strategy="most_frequent").fit(X_treino[CATEGORICAS])
 
-for parte in (X_treino, X_teste):
-    parte[NUMERICAS] = imputador_num.transform(parte[NUMERICAS])
-    parte[CATEGORICAS] = imputador_cat.transform(parte[CATEGORICAS])
+X_treino[NUMERICAS] = imputador_num.transform(X_treino[NUMERICAS])
+X_teste[NUMERICAS] = imputador_num.transform(X_teste[NUMERICAS])
+X_treino[CATEGORICAS] = imputador_cat.transform(X_treino[CATEGORICAS])
+X_teste[CATEGORICAS] = imputador_cat.transform(X_teste[CATEGORICAS])
 
-# 2. Engenharia de features: TotalSpend soma os gastos ainda na escala original.
-for parte in (X_treino, X_teste):
-    parte["TotalSpend"] = parte[GASTOS].sum(axis=1)
+# 2. Engenharia de features: TotalSpend soma os gastos ainda na escala original,
+#    porque log(a) + log(b) não é log(a + b).
+X_treino["TotalSpend"] = X_treino[GASTOS].sum(axis=1)
+X_teste["TotalSpend"] = X_teste[GASTOS].sum(axis=1)
 
-# 3. Cauda pesada: log(1+x) nos gastos e no total derivado deles.
-colunas_log = GASTOS + ["TotalSpend"]
-for parte in (X_treino, X_teste):
-    parte[colunas_log] = np.log1p(parte[colunas_log])
+# 3. Cauda pesada: log(1 + x) nos gastos e no total derivado deles.
+COLUNAS_LOG = GASTOS + ["TotalSpend"]
+X_treino[COLUNAS_LOG] = np.log1p(X_treino[COLUNAS_LOG])
+X_teste[COLUNAS_LOG] = np.log1p(X_teste[COLUNAS_LOG])
 
 # 4. Categóricas -> one-hot. handle_unknown="ignore" faz uma categoria inédita no
 #    teste virar uma linha de zeros, em vez de quebrar o transform.
-codificador = OneHotEncoder(handle_unknown="ignore", sparse_output=False).fit(X_treino[CATEGORICAS])
+codificador = OneHotEncoder(handle_unknown="ignore", sparse_output=False)
+codificador.fit(X_treino[CATEGORICAS])
+
 print("\nCategorias vistas no teste e ausentes do treino:")
 for coluna in CATEGORICAS:
     novas = set(X_teste[coluna].unique()) - set(X_treino[coluna].unique())
     print(f"  {coluna}: {novas or 'nenhuma'}")
 
-# 5. Escalonamento das numéricas para [-1, 1], a imagem da tanh.
-colunas_num = NUMERICAS + ["TotalSpend"]
-escalador = MinMaxScaler(feature_range=(-1, 1)).fit(X_treino[colunas_num])
+# 5. Escalonamento das numéricas para [-1, 1], que é a imagem da tanh.
+COLUNAS_NUM = NUMERICAS + ["TotalSpend"]
+escalador = MinMaxScaler(feature_range=(-1, 1)).fit(X_treino[COLUNAS_NUM])
 
-
-def montar(parte):
-    """Junta as numéricas escaladas com as categóricas codificadas."""
-    return np.hstack([escalador.transform(parte[colunas_num]),
-                      codificador.transform(parte[CATEGORICAS])])
-
-
-Xt_treino, Xt_teste = montar(X_treino), montar(X_teste)
+# Matriz final: numéricas escaladas à esquerda, categóricas codificadas à direita.
+Xt_treino = np.hstack([escalador.transform(X_treino[COLUNAS_NUM]),
+                       codificador.transform(X_treino[CATEGORICAS])])
+Xt_teste = np.hstack([escalador.transform(X_teste[COLUNAS_NUM]),
+                      codificador.transform(X_teste[CATEGORICAS])])
 
 # --- D: verificação e visualização ------------------------------------------
-nomes = colunas_num + list(codificador.get_feature_names_out(CATEGORICAS))
 print(f"\nNaN remanescentes: treino {np.isnan(Xt_treino).sum()} | teste {np.isnan(Xt_teste).sum()}")
 print(f"shape final: treino {Xt_treino.shape} | teste {Xt_teste.shape}")
-print(f"total de features: {len(nomes)}")
 print(f"intervalo treino: [{Xt_treino.min():.4f}, {Xt_treino.max():.4f}]")
 print(f"intervalo teste:  [{Xt_teste.min():.4f}, {Xt_teste.max():.4f}]")
 
-indice_fc = colunas_num.index("FoodCourt")
+# FoodCourt é a segunda coluna numérica (Age vem primeiro), logo índice 1.
+indice_foodcourt = COLUNAS_NUM.index("FoodCourt")
+
 fig, (ax_antes, ax_depois) = plt.subplots(1, 2, figsize=(13, 5))
-ax_antes.hist(foodcourt_bruto.dropna(), bins=60, color="tab:red")
-ax_antes.set(title="Antes: FoodCourt bruto", xlabel="gasto (unidades monetárias)",
-             ylabel="frequência", yscale="log")
-ax_depois.hist(Xt_treino[:, indice_fc], bins=60, color="tab:green")
-ax_depois.set(title="Depois: log(1+x) e escala [-1, 1]", xlabel="valor escalado",
-              ylabel="frequência", yscale="log")
-for ax, rotulo in ((ax_antes, "bruto"), (ax_depois, "transformado")):
-    ax.legend([rotulo])
-fig.suptitle("Figura 6 - FoodCourt no conjunto de treino, antes e depois do pré-processamento",
-             fontsize=13)
+# Eixo y em escala log nos dois: sem isso, só a barra dos zeros seria visível.
+ax_antes.hist(foodcourt_bruto.dropna(), bins=60, color="tab:red", label="bruto")
+ax_antes.set_title("Antes: FoodCourt bruto")
+ax_antes.set_xlabel("gasto (unidades monetárias)")
+ax_antes.set_ylabel("frequência")
+ax_antes.set_yscale("log")
+ax_antes.legend()
+
+ax_depois.hist(Xt_treino[:, indice_foodcourt], bins=60, color="tab:green", label="transformado")
+ax_depois.set_title("Depois: log(1+x) e escala [-1, 1]")
+ax_depois.set_xlabel("valor escalado")
+ax_depois.set_ylabel("frequência")
+ax_depois.set_yscale("log")
+ax_depois.legend()
+
+fig.suptitle("Figura 6 - FoodCourt no conjunto de treino, antes e depois do pré-processamento")
 fig.tight_layout()
 fig.savefig(FIGURAS / "fig6.png", dpi=150)
