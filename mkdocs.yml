@@ -1,38 +1,137 @@
 site_name: ANN-DL — Gabriel Cavarsan
-site_description: Entregas de Redes Neurais Artificiais e Deep Learning (Insper, 2026.2)
+site_author: Cavarsan, G.
+site_url: https://SEU-USUARIO.github.io/ann-dl
+repo_url: https://github.com/SEU-USUARIO/ann-dl
+repo_name: github/ann-dl
+
 theme:
   name: material
   language: pt-BR
   palette:
+    # Light mode
     - scheme: default
-      primary: indigo
+      primary: grey
       toggle:
-        icon: material/brightness-7
-        name: Modo escuro
-    - scheme: slate
-      primary: indigo
-      toggle:
-        icon: material/brightness-4
-        name: Modo claro
-  features:
-    - navigation.sections
-    - content.code.copy
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
 
-nav:
-  - Início: index.md
-  - Exercícios:
-      - 1. Data: exercises/data/index.md
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      primary: grey
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: grey
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      primary: grey
+      scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to system preference
+  features:
+    - content.code.copy
+    - content.code.select
+    - content.code.annotate
+    - content.tooltips
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.top
+    - navigation.path
+    - navigation.tracking
+    - navigation.expand
+  icon:
+    admonition:
+      note: fontawesome/solid/note-sticky
+      abstract: fontawesome/solid/book
+      info: fontawesome/solid/circle-info
+      tip: fontawesome/solid/bullhorn
+      success: fontawesome/solid/check
+      question: fontawesome/solid/circle-question
+      warning: fontawesome/solid/triangle-exclamation
+      failure: fontawesome/solid/bomb
+      danger: fontawesome/solid/skull
+      bug: fontawesome/solid/robot
+      example: fontawesome/solid/flask
+      quote: fontawesome/solid/quote-left
 
 markdown_extensions:
   - admonition
   - attr_list
-  - tables
-  - pymdownx.superfences
-  - pymdownx.details
+  - md_in_html
+  - markdown_grid_tables
   - pymdownx.arithmatex:
       generic: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.inlinehilite
   - pymdownx.snippets:
-      base_path: ["."]
+      url_download: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+        - name: python
+          class: python
+          validator: !!python/name:markdown_exec.validator
+          format: !!python/name:markdown_exec.formatter
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - footnotes
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.blocks.caption
+  - tables
+
+plugins:
+  - glightbox
+  - git-revision-date-localized:
+      enable_creation_date: true
+  - git-authors
+  - search
+  - badges
+  - minify:
+      minify_html: true
+  - markdown-exec
+  - render_swagger:
+      allow_arbitrary_locations: true
+  - termynal:
+      prompt_literal_start:
+        - "$"
+        - ">"
+  - mkdocs-jupyter:
+      execute: false
+      allow_errors: false
+      include: ["*.ipynb"]   # os .py em code/ sao fonte, nao paginas
 
 extra_javascript:
+  - https://unpkg.com/mathjax/es5/tex-mml-chtml.js
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+  - https://fastly.jsdelivr.net/npm/jquery/dist/jquery.min.js
+  - https://fastly.jsdelivr.net/npm/echarts/dist/echarts.min.js
+  - javascripts/mathjax.js
+
+nav:
+  - Home: index.md
+  - Exercícios:
+    - 1. Data: ./exercises/data/index.md
