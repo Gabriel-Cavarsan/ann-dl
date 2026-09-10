@@ -1,44 +1,36 @@
-## Setup
+# ANN-DL — Gabriel Cavarsan
 
-Para utilizar o código deste repositório, siga as instruções a seguir:
+Entregas da disciplina **Redes Neurais Artificiais e Deep Learning** — Insper, 2026.2.
 
-Crie um ambiente virtual do Python:
+Site publicado: **https://gabriel-cavarsan.github.io/ann-dl**
 
-``` shell
-python3 -m venv env
+## Entregas
+
+| # | Exercício | Pasta |
+|---|-----------|-------|
+| 1 | Data — preparação e análise de dados | [`docs/exercises/data/`](docs/exercises/data/) |
+
+Cada entrega tem o relatório em `index.md`, os scripts que realmente rodaram em `code/` e as figuras que o relatório exibe em `figures/`.
+
+## Rodando localmente
+
+```shell
+python -m venv env
+.\env\Scripts\activate          # Windows
+python -m pip install -r requirements.txt
+mkdocs serve
 ```
 
-Ative o ambiente virtual (**você deve fazer isso sempre que for executar algum script deste repositório**):
+Os scripts de cada exercício rodam de forma independente e regeram as figuras:
 
-``` shell
-source ./env/bin/activate
+```shell
+python docs/exercises/data/code/ex1_nuvens.py
+python docs/exercises/data/code/ex2_dimensoes.py
+python docs/exercises/data/code/ex3_spaceship.py
 ```
 
-Instale as dependências com:
+Todos fixam `np.random.default_rng(42)`, então os resultados são reproduzíveis.
 
-``` shell
-python3 -m pip install -r requirements.txt --upgrade
-```
+---
 
-## Deployment
-
-O material utiliza o [mkdocs](https://www.mkdocs.org/) para gerar a documentação. Para visualizar a documentação, execute o comando:
-
-``` shell
-mkdocs serve -o
-```
-
-Para subir ao GitHub Pages, execute o comando:
-
-``` shell
-mkdocs gh-deploy
-```
-
-
-## Notebooks
-
-Para subir notebooks no mkdocs, podemos utilizar a biblioteca do [mkdocs-jupyter](https://github.com/danielfrg/mkdocs-jupyter).
-
-Instalação, utilização e exemplos podem ser vistos na [documentação oficial](https://github.com/danielfrg/mkdocs-jupyter).
-
-O arquivo `mkdocs.yml` tem anotações nos nós modificados de exemplo.
+Baseado no [template da disciplina](https://github.com/hsandmann/documentation.template) (MkDocs + Material).
