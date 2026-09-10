@@ -1,8 +1,8 @@
 site_name: ANN-DL — Gabriel Cavarsan
 site_author: Cavarsan, G.
-site_url: https://SEU-USUARIO.github.io/ann-dl
-repo_url: https://github.com/SEU-USUARIO/ann-dl
-repo_name: github/ann-dl
+site_url: https://gabriel-cavarsan.github.io/ann-dl
+repo_url: https://github.com/Gabriel-Cavarsan/ann-dl
+repo_name: Gabriel-Cavarsan/ann-dl
 
 theme:
   name: material
