@@ -7,6 +7,11 @@ ai_use: "Usei o Claude como apoio na escrita dos scripts em code/, na geração 
 
 O fio condutor da atividade é o espalhamento dos dados: quanto uma nuvem de pontos se abre, em que direção, e como isso muda a dificuldade da classificação.
 
+!!! info "Uso de IA"
+    Usei o Claude como apoio na escrita dos scripts em `code/`, na geração das figuras e na revisão do texto. As decisões de método e as análises foram discutidas comigo; revisei o código linha a linha e sei explicar cada etapa. Todos os números citados saem da execução dos scripts desta pasta.
+
+    A mesma declaração está no campo `ai_use` do front matter deste arquivo, conforme o formato de entrega pede.
+
 !!! note "Reprodutibilidade"
     Cada script começa com `rng = np.random.default_rng(42)` e usa esse mesmo gerador até o fim. Nenhum modelo é treinado. Bibliotecas: `numpy`, `pandas`, `matplotlib` e `scikit-learn` (só PCA e pré-processamento).
 
