@@ -9,3 +9,4 @@ Cada entrega vive em sua própria pasta, com o relatório, o código que realmen
 | # | Exercício | Entrega |
 |---|-----------|---------|
 | 1 | [Data](exercises/data/index.md) — preparação e análise de dados | 10.set.2026 |
+| 2 | [Perceptron](exercises/perceptron/index.md) — o algoritmo e suas limitações | 22.set.2026 |

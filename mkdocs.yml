@@ -135,3 +135,4 @@ nav:
   - Home: index.md
   - Exercícios:
     - 1. Data: ./exercises/data/index.md
+    - 2. Perceptron: ./exercises/perceptron/index.md
